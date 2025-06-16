@@ -7,7 +7,7 @@ const { parseError } = require('../util');
 
 const userRouter = Router();
 
-userRouter.get('/register', (req, res) => {
+userRouter.get('/register', isGuest(), (req, res) => {
     res.render('register', { title: 'Register'});
 });
 userRouter.post('/register', isGuest(),

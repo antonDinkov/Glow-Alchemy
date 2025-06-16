@@ -62,7 +62,7 @@ async function update(id, userId, newData) {
     return record;
 };
 
-async function vote(id, userId) {
+async function recommend(id, userId) {
     const record = await Data.findById(id);
 
     if (!record) {
@@ -70,7 +70,7 @@ async function vote(id, userId) {
     };
 
     //TODO replace with real properties
-    record.voteList.push(userId);
+    record.recommendList.push(userId);
     
     await record.save();
 
@@ -97,6 +97,6 @@ module.exports = {
     getByIdKey,
     create,
     update,
-    vote,
+    recommend,
     deleteById
 }

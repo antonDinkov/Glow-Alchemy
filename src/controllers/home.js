@@ -2,7 +2,7 @@ const { Router } = require("express");
 const { isUser, isOwner, hasVoted } = require("../middlewares/guards");
 const { body, validationResult } = require("express-validator");
 const { parseError } = require("../util");
-const { create, getAll, getById, update, deleteById, vote, getLastThree } = require("../services/data");
+const { create, getAll, getById, update, deleteById, getLastThree, recommend } = require("../services/data");
 const { Data } = require("../models/Data");
 
 //TODO replace with real router according to exam description
@@ -135,9 +135,9 @@ homeRouter.get('/catalog/:id/delete', isOwner(), async (req, res) => {
     }
 });
 
-homeRouter.get('/catalog/:id/vote', hasVoted(), async (req, res) => {
+homeRouter.get('/catalog/:id/recommend', hasVoted(), async (req, res) => {
     try {
-        await vote(req.params.id, req.user._id);
+        await recommend(req.params.id, req.user._id);
         res.redirect(`/catalog/${req.params.id}`);
     } catch (err) {
         console.log(err);
@@ -146,17 +146,14 @@ homeRouter.get('/catalog/:id/vote', hasVoted(), async (req, res) => {
 });
 
 homeRouter.get('/search', async (req, res) => {
-    const { search = '', volcano = '' } = req.query;
-    let volcanoes = await getAll();
+    const { search = '' } = req.query;
+    let products = await getAll();
 
     if (search) {
-        volcanoes = volcanoes.filter(volc => volc.name.toLowerCase().includes(search.toLowerCase()));
-    }
-    if (volcano) {
-        volcanoes = volcanoes.filter(volc => volc.volcano == volcano);
+        products = products.filter(pr => pr.name.toLowerCase().includes(search.toLowerCase()));
     }
 
-    res.render('search', { volcanoes, search, volcano, title: 'Search' });
+    res.render('search', { products, search, title: 'Search' });
 });
 
 module.exports = { homeRouter }
