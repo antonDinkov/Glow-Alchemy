@@ -112,8 +112,10 @@ homeRouter.post('/catalog/:id/edit', isOwner(),
                 res.render('404');
                 return;
             };
-
+            console.log('before update');
             const newRecord = await update(req.params.id, req.user._id, req.body);
+            console.log('áfter update');
+            
             res.redirect(`/catalog/${req.params.id}`);
         } catch (err) {
             res.render('edit', { product, errors: parseError(err).errors });

@@ -50,12 +50,12 @@ async function update(id, userId, newData) {
 
     //TODO replace with real properties
     record.name = newData.name;
-    record.location = newData.location;
-    record.elevation = newData.elevation;
-    record.year = newData.year;
-    record.image = newData.image;
-    record.volcano = newData.volcano;
+    record.skin = newData.skin;
     record.description = newData.description;
+    record.ingredients = newData.ingredients;
+    record.benefits = newData.benefits;
+    record.price = newData.price;
+    record.image = newData.image;
 
     await record.save();
 
