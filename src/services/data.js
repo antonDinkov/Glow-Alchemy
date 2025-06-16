@@ -6,14 +6,29 @@ async function getAll() {
     return Data.find().lean();
 };
 
+async function getLastThree() {
+    return Data.find().sort({ _id: -1 }).limit(3).lean(); //последните три регистрирани продукта
+};
+
 async function getById(id) {
     return Data.findById(id).lean();
 };
 
+async function getByIdKey(id, key) {
+    const result = await Data.findById(id).select(key).lean();
+    return result?.[key] || [];
+};
+
 async function create(data, authorId) {
-//TODO extract properties from view model
     const record = new Data({
-        prop: data.prop,
+        name: data.name,
+        skin: data.skin,
+        description: data.description,
+        ingredients: data.ingredients,
+        benefits: data.benefits,
+        price: Number(data.price),
+        image: data.image,
+        recommendList: [],
         author: authorId
     });
 
@@ -22,7 +37,7 @@ async function create(data, authorId) {
     return record;
 };
 
-async function update(id, data, userId ) {
+async function update(id, userId, newData) {
     const record = await Data.findById(id);
 
     if (!record) {
@@ -34,11 +49,33 @@ async function update(id, data, userId ) {
     };
 
     //TODO replace with real properties
+    record.name = newData.name;
+    record.location = newData.location;
+    record.elevation = newData.elevation;
+    record.year = newData.year;
+    record.image = newData.image;
+    record.volcano = newData.volcano;
+    record.description = newData.description;
 
     await record.save();
 
-    return;
+    return record;
 };
+
+async function vote(id, userId) {
+    const record = await Data.findById(id);
+
+    if (!record) {
+        throw new Error("Record not found " + id);
+    };
+
+    //TODO replace with real properties
+    record.voteList.push(userId);
+    
+    await record.save();
+
+    return record;
+}
 
 async function deleteById(id, userId) {
     const record = await Data.findById(id);
@@ -55,8 +92,11 @@ async function deleteById(id, userId) {
 
 module.exports = {
     getAll,
+    getLastThree,
     getById,
+    getByIdKey,
     create,
     update,
+    vote,
     deleteById
 }

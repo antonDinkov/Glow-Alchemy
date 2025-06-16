@@ -1,0 +1,13 @@
+<h2>Product Catalog</h2>
+<section class="products">
+    {{#if products}}
+    {{#each products}}
+    {{> product}}
+    {{/each}}
+    {{else}}
+    <p class="no-post">There are no products found yet!</p>
+    {{/if}}
+    <!-- Add more products here -->
+
+    <!-- <p class="no-post">There are no products found yet!</p> -->
+</section>

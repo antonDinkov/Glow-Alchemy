@@ -1,0 +1,43 @@
+<article class="product-detail">
+    <img src="{{product.image}}">
+    <h2>{{product.name}}</h2>
+    <p>{{product.description}}</p>
+
+    <h3>|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|</h3>
+
+    <h3>Key Ingredients:</h3>
+    <p>{{product.ingredients}}</p>
+
+    <h3>|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|</h3>
+
+    <h3>Benefits:</h3>
+    <p>{{product.benefits}}</p>
+
+    <h3>|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|</h3>
+
+    <h3>Skin Type:</h3>
+    <p>{{product.skin}}</p>
+
+    <h3>|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|</h3>
+
+    <h3>Price: ${{product.price}}</h3>
+
+    <h3>|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|</h3>
+
+    <h3>People Who Recommend: {{recommendCount}}</h3>
+</article>
+
+{{#if isLoggedIn}}
+<div class="command">
+    {{#if isAuthor}}
+    <a href="/catalog/{{product._id}}/edit">Edit</a>
+    <a href="/catalog/{{product._id}}/delete">Delete</a>
+    {{else}}
+        {{#if hasRecommended}}
+            <p>You've already recommended this product!</p>
+        {{else}}
+            <a href="/recommend">Recommend</a>
+        {{/if}}
+    {{/if}}
+</div>
+{{/if}}
